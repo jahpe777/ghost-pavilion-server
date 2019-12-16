@@ -1,3 +1,5 @@
+process.env.TZ = 'UTC'
+require('dotenv').confog()
 const { expect } = require('chai')
 const supertest = require('supertest')
 
