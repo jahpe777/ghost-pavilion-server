@@ -65,37 +65,5 @@ emailsRouter
   .get((req, res, next) => {
     res.json(serializeSubscriber(res.email))
   })
-//   .delete((req, res, next) => {
-//     EmailsService.deleteFolder(
-//       req.app.get('db'),
-//       req.params.folder_id
-//     )
-//       .then(numRowsAffected => {
-//         res.status(204).end()
-//       })
-//       .catch(next)
-//   })
-//   .patch(jsonParser, (req, res, next) => {
-//     const { name } = req.body
-//     const folderToUpdate = { name }
-
-//     if(!folderToUpdate) {
-//       return res.status(400).json({
-//         error: {
-//           message: 'Body must contain a new folder name'
-//         }
-//       })
-//     }
-
-//     EmailsService.updateFolder(
-//       req.app.get('db'),
-//       req.params.folder_id,
-//       folderToUpdate
-//     )
-//       .then(numRowsAffected => {
-//         res.status(204).end()
-//       })
-//       .catch(next)
-//   })
 
 module.exports = emailsRouter
