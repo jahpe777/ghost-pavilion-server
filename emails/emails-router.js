@@ -9,6 +9,7 @@ const jsonParser = express.json()
 const serializeSubscriber = subscriber => ({
   id: subscriber.id,
   email: xss(subscriber.email),
+  created: subscriber.created
 })
 
 emailsRouter
@@ -64,6 +65,16 @@ emailsRouter
   })
   .get((req, res, next) => {
     res.json(serializeSubscriber(res.email))
+  })
+  .delete((req, res, next) => {
+    EmailsService.deleteEmail(
+      req.app.get('db'),
+      req.params.email_id
+    )
+      .then(numRowsAffected => {
+        res.status(204).end()
+      })
+      .catch(next)
   })
 
 module.exports = emailsRouter

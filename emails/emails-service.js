@@ -21,6 +21,18 @@ const EmailsService = {
             .where('id', id)
             .first()
     },
+
+    deleteEmail(knex, id) {
+        return knex('subscribers')
+            .where('id', id)
+            .delete()
+    },
+
+    updateEmail(knex, id, newEmail) {
+        return knex('subscribers')
+            .where({ id })
+            .update(newEmail)
+    },
 }
 
 module.exports = EmailsService
