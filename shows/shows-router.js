@@ -9,7 +9,7 @@ const jsonParser = express.json()
 
 const serializeShow = show => {
 
-  let formatDate = moment().format('L');
+  let formatDate = moment(show.date).format('L');
 
   // let d = new Date(show.date);
   // let month = d.getMonth+1;
@@ -36,11 +36,11 @@ showsRouter
       .catch(next)
   })
   .post(jsonParser, (req, res, next) => {
-    const { date, city, venue } = req.body
-    if((venue == null || city == null || date == null)) {
+    const { date, city, venue } = req.body.show
+    if((date == null || city == null || venue == null)) {
       return res.status(400).json({
         error: {
-          message: 'entering in venue, city, and venue is required'
+          message: `'date', 'city', & 'venue' are required`
         }
       })
     }

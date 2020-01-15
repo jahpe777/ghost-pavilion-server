@@ -20,7 +20,7 @@ function makeEmailsArray() {
   
   function makeMaliciousEmail() {
     const maliciousEmail = {
-      id: 911,
+      id: 4,
       email: 'Naughty naughty very naughty <script>alert("xss");</script>',
     }
     const expectedEmail = {

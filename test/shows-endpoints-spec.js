@@ -152,66 +152,80 @@ describe('Shows Endpoints', () => {
 
   describe('POST /api/shows', () => {
     ['date', 'city', 'venue'].forEach(field => {
-      const newShow = {
-        date: '2020-01-03',
+      const newShow = { show: {
+        date: '01/14/2020',
         city: 'Los Angeles, CA',
         venue: 'Los Globos',
-      }
+      }}
 
       it(`responds with 400 missing '${field}' if not supplied`, () => {
-        delete newShow[field]
+        delete newShow.show[field]
 
         return supertest(app)
           .post(`/api/shows`)
           .send(newShow)
           .expect(400, {
-            error: { message: `'${field}' is required` }
+            error: { message: `'date', 'city', & 'venue' are required` }
           })
       })
     })
 
     it(`responds with 400 invalid 'venue' if null`, () => {
-      const newShowInvalidVenue = {
-        date: '2020-01-03',
+      const newShowInvalidVenue = { show: {
+        date: '01/14/2020',
         city: 'Los Angeles, CA',
-        venue: 'invalid',
-      }
+        venue: null,
+      }}
       return supertest(app)
         .post(`/api/shows`)
         .send(newShowInvalidVenue)
         .expect(400, {
-          error: { message: 'entering in venue, city, and venue is required' }
+          error: { message: `'date', 'city', & 'venue' are required` }
         })
     })
 
     it(`responds with 400 invalid 'city' if not a valid city`, () => {
-      const newShowInvalidCity = {
-        date: '2020-01-03',
-        city: 'invalid',
+      const newShowInvalidCity = { show: {
+        date: '01/14/2020',
+        city: null,
         venue: 'Los Globos',
-      }
+      }}
       return supertest(app)
         .post(`/api/shows`)
         .send(newShowInvalidCity)
         .expect(400, {
-          error: { message: 'entering in venue, city, and venue is required' }
+          error: { message: `'date', 'city', & 'venue' are required` }
+        })
+    })
+
+    it(`responds with 400 invalid 'date' if not a valid date`, () => {
+      const newShowInvalidDate = { show: {
+        date: null,
+        city: 'Los Angeles, CA',
+        venue: 'Los Globos',
+      }}
+      return supertest(app)
+        .post(`/api/shows`)
+        .send(newShowInvalidDate)
+        .expect(400, {
+          error: { message: `'date', 'city', & 'venue' are required` }
         })
     })
 
     it('adds a new show to the store', () => {
-      const newShow = {
-        date: 'test-title',
-        city: 'https://test.com',
-        venue: 'test description',
-      }
+      const newShow = { show : {
+        date: '01/14/2020',
+        city: 'Los Angeles, CA',
+        venue: 'Los Globos',
+      }}
       return supertest(app)
         .post(`/api/shows`)
         .send(newShow)
         .expect(201)
         .expect(res => {
-          expect(res.body.date).to.eql(newShow.date)
-          expect(res.body.city).to.eql(newShow.city)
-          expect(res.body.venue).to.eql(newShow.venue)
+          expect(res.body.date).to.eql(newShow.show.date)
+          expect(res.body.city).to.eql(newShow.show.city)
+          expect(res.body.venue).to.eql(newShow.show.venue)
           expect(res.body).to.have.property('id')
           expect(res.headers.location).to.eql(`/api/shows/${res.body.id}`)
         })
@@ -224,9 +238,10 @@ describe('Shows Endpoints', () => {
 
     it('removes XSS attack content from response', () => {
       const { maliciousShow, expectedShow } = fixtures.makeMaliciousShow()
+      const updatedMaliciousShow = {show: {...maliciousShow}}
       return supertest(app)
         .post(`/api/shows`)
-        .send(maliciousShow)
+        .send(updatedMaliciousShow)
         .expect(201)
         .expect(res => {
           expect(res.body.date).to.eql(expectedShow.date)
