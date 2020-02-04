@@ -11,12 +11,6 @@ const serializeShow = show => {
 
   let formatDate = moment(show.date).format('L');
 
-  // let d = new Date(show.date);
-  // let month = d.getMonth+1;
-  // if(month < 10){ month = "0"+month;}
-  
-  // let dateString = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-
   return ({
   id: show.id,
   date: xss(formatDate),
