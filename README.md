@@ -10,8 +10,8 @@ The Ghost Pavilion API is organized around REST. It accepts standard GET, POST, 
 
 All API calls begin with: https://fierce-hollows-84409.herokuapp.com/api/
 
-###Shows
+##Shows
 GET /shows GET /shows/:show_id POST /shows DELETE /shows/:show_id
 
-###Subscribers
+##Subscribers
 GET /emails GET /emails/email_id POST /emails DELETE /emails/:email_id
